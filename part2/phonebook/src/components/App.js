@@ -97,6 +97,19 @@ const App = () => {
                 setNewName('')
                 setNewNumber('')
             })
+            .catch(error => {
+                console.log(error.response.data)
+                setNotification({
+                    message: error.response.data.error,
+                    class: 'error'
+                })
+                setTimeout(() => {
+                    setNotification({
+                        message: null,
+                        class: null
+                    })
+                }, 5000)
+              })
     }
 
     useEffect(() => {
