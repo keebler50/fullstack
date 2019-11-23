@@ -51,14 +51,51 @@ const blogs = [
   }
 ]
 
-test('dummy returns one', () => {
-  const blogs = []
+// test('dummy returns one', () => {
+//   const blogs = []
 
-  const result = listHelper.dummy(blogs)
-  expect(result).toBe(1)
-})
+//   const result = listHelper.dummy(blogs)
+//   expect(result).toBe(1)
+// })
 
-describe('total likes', () => {
+// describe('total likes', () => {
+//   const listWithOneBlog = [
+//     {
+//       _id: '5a422aa71b54a676234d17f8',
+//       title: 'Go To Statement Considered Harmful',
+//       author: 'Edsger W. Dijkstra',
+//       url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+//       likes: 5,
+//       __v: 0
+//     }
+//   ]
+
+//   test('when list has only one blog equals the likes of that', () => {
+//     expect(listHelper.totalLikes(listWithOneBlog)).toBe(5)
+//   })
+
+//   test('using blogs list with six entries', () => {
+//     expect(listHelper.totalLikes(blogs)).toBe(36)
+//   })
+
+//   test('using an empty array', () => {
+//     expect(listHelper.totalLikes([])).toBe(0)
+//   })
+
+//   test('using a single valued array with undefined likes value', () => {
+//     expect(listHelper.totalLikes([{ likes: undefined }])).toBe(0)
+//   })
+
+//   test('using a single valued array with string likes value', () => {
+//     expect(listHelper.totalLikes([{ likes: 'house' }])).toBe(0)
+//   })
+
+//   test('using a single valued array without a likes property', () => {
+//     expect(listHelper.totalLikes([{ liks: 'house' }])).toBe(0)
+//   })
+// })
+
+describe('favorite blog', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -70,27 +107,23 @@ describe('total likes', () => {
     }
   ]
 
-  test('when list has only one blog equals the likes of that', () => {
-    expect(listHelper.totalLikes(listWithOneBlog)).toBe(5)
+  test('when list has only one blog equals that blog', () => {
+    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual({
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
   })
 
-  test('using blogs list with six entries totally 36 likes', () => {
-    expect(listHelper.totalLikes(blogs)).toBe(36)
+  test('using blogs list with six entries', () => {
+    expect(listHelper.favoriteBlog(blogs)).toEqual({
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      likes: 12
+    })
   })
 
   test('using an empty array', () => {
-    expect(listHelper.totalLikes([])).toBe(0)
-  })
-
-  test('using a single valued array with undefined likes value', () => {
-    expect(listHelper.totalLikes([{ likes: undefined }])).toBe(0)
-  })
-
-  test('using a single valued array with string likes value', () => {
-    expect(listHelper.totalLikes([{ likes: 'house' }])).toBe(0)
-  })
-
-  test('using a single valued array without a likes property', () => {
-    expect(listHelper.totalLikes([{ liks: 'house' }])).toBe(0)
+    expect(listHelper.favoriteBlog([])).toBe(null)
   })
 })
