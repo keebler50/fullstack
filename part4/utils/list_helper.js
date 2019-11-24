@@ -11,7 +11,7 @@ const totalLikes = (blogs) => {
   return blogs.map(b => {
     if (b.likes && typeof b.likes === 'number') return b.likes
     return 0
-  }).reduce((acc, curr) => acc + curr)
+  }).reduce((acc, cur) => acc + cur)
 }
 
 const favoriteBlog = (blogs) => {
@@ -29,6 +29,8 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
+  if (blogs.length === 0) return null
+
   const uniques = array.uniq(blogs.map(b => b.author))
   const grouped = coll.groupBy(blogs, 'author')
 
@@ -42,9 +44,26 @@ const mostBlogs = (blogs) => {
   return bca[0]
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return null
+
+  const uniques = array.uniq(blogs.map(b => b.author))
+  const grouped = coll.groupBy(blogs, 'author')
+
+  const bca = uniques.map(u => {
+    const bc = {}
+    bc.author = u
+    bc.likes = grouped[u].map(g => g.likes).reduce((acc, cur) => acc + cur)
+    return bc
+  }).sort((a, b) => a.likes < b.likes)
+
+  return bca[0]
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
