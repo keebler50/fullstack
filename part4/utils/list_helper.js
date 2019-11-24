@@ -1,3 +1,6 @@
+const array = require('lodash/array')
+const coll = require('lodash/collection');
+
 const dummy = (blogs) => {
   // ...
   return 1
@@ -25,8 +28,23 @@ const favoriteBlog = (blogs) => {
   }
 }
 
+const mostBlogs = (blogs) => {
+  const uniques = array.uniq(blogs.map(b => b.author))
+  const grouped = coll.groupBy(blogs, 'author')
+
+  const bca = uniques.map(u => {
+    const bc = {}
+    bc.author = u
+    bc.blogs = grouped[u].length
+    return bc
+  }).sort((a, b) => a.blogs < b.blogs)
+
+  return bca[0]
+}
+
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
