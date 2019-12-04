@@ -1,5 +1,5 @@
 const array = require('lodash/array')
-const coll = require('lodash/collection');
+const coll = require('lodash/collection')
 
 const dummy = (blogs) => {
   // ...
