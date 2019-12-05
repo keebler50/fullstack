@@ -82,3 +82,15 @@ test('missing likes property defaults to 0', async () => {
 
   expect(newBlogFromDb[0].likes).toBe(0)
 })
+
+test('missing title & url properties response is 400', async () => {
+  const newBlog = {
+    author: 'Roger Dodger',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
