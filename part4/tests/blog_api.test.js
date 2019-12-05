@@ -38,7 +38,7 @@ afterAll(() => {
   mongoose.connection.close()
 })
 
-test('a valid blog can be added ', async () => {
+test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'A Hole New Blog',
     author: 'Roger Dodger',
@@ -57,4 +57,28 @@ test('a valid blog can be added ', async () => {
 
   const contents = blogsAtEnd.map(n => n.title)
   expect(contents).toContain('A Hole New Blog')
+})
+
+test('missing likes property defaults to 0', async () => {
+  const newBlog = {
+    title: 'A Hole New Blog',
+    author: 'Roger Dodger',
+    url: 'https://roger.dodger/a-hole-new-blog'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const initialTitles = helper.initialBlogs.map(b => b.title)
+
+  const newBlogFromDb = blogsAtEnd.filter(n => initialTitles.indexOf(n.title) === -1)
+
+  expect(newBlogFromDb.length).toBe(1)
+
+  expect(newBlogFromDb[0].likes).toBe(0)
 })
