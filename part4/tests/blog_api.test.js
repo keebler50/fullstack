@@ -37,3 +37,24 @@ test('verify the unique identifier property of the blog posts is named id', asyn
 afterAll(() => {
   mongoose.connection.close()
 })
+
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    title: 'A Hole New Blog',
+    author: 'Roger Dodger',
+    url: 'https://roger.dodger/a-hole-new-blog',
+    likes: 3
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+
+  const contents = blogsAtEnd.map(n => n.title)
+  expect(contents).toContain('A Hole New Blog')
+})
