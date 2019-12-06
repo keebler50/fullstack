@@ -50,4 +50,35 @@ blogsRouter.delete('/:id', async (request, response, next) => {
   }
 })
 
+blogsRouter.put('/:id', async (request, response, next) => {
+  const body = request.body
+
+  if (body.title === undefined) {
+    return response.status(400).json({ error: 'title missing' })
+  }
+
+  if (body.author === undefined) {
+    return response.status(400).json({ error: 'author missing' })
+  }
+
+  if (body.url === undefined) {
+    return response.status(400).json({ error: 'url missing' })
+  }
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: (body.likes) ? body.likes : 0
+  }
+
+  try {
+    await Blog.findByIdAndUpdate(request.params.id, blog)
+    response.status(200).end()
+  } catch (exception) {
+    console.log(exception)
+    next(exception)
+  }
+})
+
 module.exports = blogsRouter
