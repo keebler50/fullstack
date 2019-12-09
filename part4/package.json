@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "watch": "nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "watch": "NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test-blog": "NODE_ENV=test jest tests/blog_api.test.js --verbose --runInBand",
+    "test-user": "NODE_ENV=test jest tests/user_api.test.js --verbose --runInBand"
   },
   "author": "Ken Buechel",
   "license": "MIT",

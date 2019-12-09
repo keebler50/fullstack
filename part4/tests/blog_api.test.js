@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
-
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
@@ -25,17 +24,11 @@ test('blogs are returned as json', async () => {
 
 test('verify the unique identifier property of the blog posts is named id', async () => {
   const blogsAtStart = await helper.blogsInDb()
-
   const blogToView = blogsAtStart[0]
-
   const resultBlog = await api
     .get(`/api/blogs/${blogToView.id}`)
 
   expect(resultBlog.body.id).toBeDefined()
-})
-
-afterAll(() => {
-  mongoose.connection.close()
 })
 
 test('a valid blog can be added', async () => {
@@ -73,13 +66,10 @@ test('missing likes property defaults to 0', async () => {
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
-
   const initialTitles = helper.initialBlogs.map(b => b.title)
-
   const newBlogFromDb = blogsAtEnd.filter(n => initialTitles.indexOf(n.title) === -1)
 
   expect(newBlogFromDb.length).toBe(1)
-
   expect(newBlogFromDb[0].likes).toBe(0)
 })
 
@@ -93,4 +83,17 @@ test('missing title & url properties response is 400', async () => {
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
+})
+
+test('artifical await', async () => {
+  // the following await statement prevents jest from throwing the following error:
+  //    "Jest has detected the following 1 open handle potentially keeping Jest from exiting"
+  // https://github.com/visionmedia/supertest/issues/520
+  await new Promise(resolve => setTimeout(resolve, 2000))
+
+  expect(2).toBe(2)
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })
